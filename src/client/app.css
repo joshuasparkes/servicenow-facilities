@@ -138,14 +138,16 @@ body {
 
 .apple-tabs {
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 2px;
-    padding: 0 24px;
-    margin: 12px auto 0 auto;
-    height: 32px;
+    align-items: stretch;
+    justify-content: stretch;
+    width: 100vw;
+    min-width: 0;
     background: transparent;
     user-select: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: none;
+    gap: 0;
 }
 
 .tab-btn {
@@ -262,8 +264,6 @@ body {
     gap: var(--space-3);
 }
 
-
-
 /* Navigation */
 .portal-nav {
     background: white;
@@ -274,6 +274,58 @@ body {
     top: 0;
     z-index: 10;
     backdrop-filter: blur(10px);
+}
+
+.nav-tab {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.13);
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 1em;
+    font-family: "Raleway", "SF Pro Text", Arial, sans-serif;
+    height: 32px;
+    min-width: 0;
+    border-radius: 7px 7px 0 0;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    position: relative;
+    transition:
+        background 0.26s cubic-bezier(0.44, 0.13, 0.48, 0.87),
+        color 0.19s cubic-bezier(0.44, 0.13, 0.48, 0.87);
+    border-bottom: none;
+    box-shadow: none;
+}
+
+nav-tab i {
+    font-size: 1em;
+    margin-right: 0.4em;
+    vertical-align: middle;
+    height: 1em;
+    width: 1em;
+    display: inline-block;
+    transition: color 0.2s;
+}
+
+.nav-tab:not(.active):hover {
+    background: rgba(255, 255, 255, 0.21);
+    color: #e7e7e7;
+}
+
+.nav-tab.active {
+    background: #fff;
+    color: #2781e4;
+    font-weight: 700;
+    z-index: 2;
+    border-bottom: none;
+}
+
+.nav-tab.active i {
+    color: #2781e4;
 }
 
 .portal-nav {

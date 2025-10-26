@@ -42,6 +42,14 @@ export default function App() {
     setCurrentView(view);
   };
 
+  const tabs = [
+    { label: "Dashboard", view: "dashboard", icon: "fa-chart-bar" },
+    { label: "Submit Request", view: "request", icon: "fa-pen-to-square" },
+    { label: "Report Issue", view: "issue", icon: "fa-triangle-exclamation" },
+    { label: "My Requests", view: "my-requests", icon: "fa-clipboard-list" },
+    { label: "My Issues", view: "my-issues", icon: "fa-wrench" },
+  ];
+
   const renderCurrentView = () => {
     switch (currentView) {
       case "request":
@@ -79,53 +87,25 @@ export default function App() {
               Welcome, {user.first_name} {user.last_name}
             </span>
           )}
-          {!user && (
-            <span className="welcome-text">Welcome to Facilities</span>
-          )}
+          {!user && <span className="welcome-text">Welcome to Facilities</span>}
         </div>
       </header>
 
       <nav className="apple-tabs">
-        <button
-          className={
-            currentView === "dashboard" ? "nav-button active" : "nav-button"
-          }
-          onClick={() => handleViewChange("dashboard")}
-        >
-          📊 Dashboard
-        </button>
-        <button
-          className={
-            currentView === "request" ? "nav-button active" : "nav-button"
-          }
-          onClick={() => handleViewChange("request")}
-        >
-          📝 Submit Request
-        </button>
-        <button
-          className={
-            currentView === "issue" ? "nav-button active" : "nav-button"
-          }
-          onClick={() => handleViewChange("issue")}
-        >
-          🚨 Report Issue
-        </button>
-        <button
-          className={
-            currentView === "my-requests" ? "nav-button active" : "nav-button"
-          }
-          onClick={() => handleViewChange("my-requests")}
-        >
-          📋 My Requests
-        </button>
-        <button
-          className={
-            currentView === "my-issues" ? "nav-button active" : "nav-button"
-          }
-          onClick={() => handleViewChange("my-issues")}
-        >
-          🔧 My Issues
-        </button>
+        {tabs.map((tab) => (
+          <button
+            key={tab.view}
+            className={currentView === tab.view ? "nav-tab active" : "nav-tab"}
+            onClick={() => handleViewChange(tab.view)}
+            style={{ flex: 1 }} // guarantee equal spacing for all tabs
+          >
+            <i
+              className={`fa-solid ${tab.icon}`}
+              style={{ marginRight: "0.4em" }}
+            />{" "}
+            {tab.label}
+          </button>
+        ))}
       </nav>
 
       <main className="portal-content">{renderCurrentView()}</main>
