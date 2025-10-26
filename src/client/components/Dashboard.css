@@ -1,0 +1,796 @@
+/* ============================================
+   macOS Tahoe Dashboard Styles
+   ServiceNow Zurich Release
+   ============================================ */
+
+/* CSS Variables - Tahoe Color Palette */
+:root {
+    /* Tahoe Gradients */
+    --tahoe-blue: linear-gradient(135deg, #0a84ff 0%, #0969da 100%);
+    --tahoe-red: linear-gradient(135deg, #ff453a 0%, #ff2d55 100%);
+    --tahoe-green: linear-gradient(135deg, #32d74b 0%, #30d158 100%);
+    --tahoe-purple: linear-gradient(135deg, #bf5af2 0%, #ac8eff 100%);
+    --tahoe-orange: linear-gradient(135deg, #ff9f0a 0%, #ff9500 100%);
+    --tahoe-pink: linear-gradient(135deg, #ff375f 0%, #ff2d55 100%);
+
+    /* Glassmorphism */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.9);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+
+    /* Tahoe Shadows */
+    --tahoe-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --tahoe-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+    --tahoe-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --tahoe-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12);
+
+    /* Spacing */
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+
+    /* Tahoe Border Radius */
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-2xl: 32px;
+    --radius-full: 9999px;
+}
+
+/* Base Dashboard Container */
+.dashboard-tahoe {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--space-8);
+    background: linear-gradient(to bottom, #f5f5f7 0%, #ffffff 50%);
+    min-height: 100vh;
+}
+
+/* ============================================
+   Hero Section - macOS Style Header
+   ============================================ */
+.dashboard-hero {
+    position: relative;
+    padding: var(--space-12) var(--space-8);
+    margin-bottom: var(--space-8);
+    background: linear-gradient(135deg, #0a84ff 0%, #5e5ce6 50%, #bf5af2 100%);
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+    box-shadow: var(--tahoe-shadow-xl);
+}
+
+.dashboard-hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.03)"/></svg>');
+    opacity: 0.5;
+    animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 var(--space-3) 0;
+    letter-spacing: -0.03em;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-weight: 500;
+}
+
+.hero-decoration {
+    position: absolute;
+    bottom: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.2) 0%,
+        transparent 70%
+    );
+    border-radius: 50%;
+    filter: blur(40px);
+}
+
+/* ============================================
+   Stats Cards - Floating Glassmorphism
+   ============================================ */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+}
+
+.stat-card-tahoe {
+    position: relative;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-8);
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    box-shadow: var(--tahoe-shadow-lg);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+}
+
+.stat-card-tahoe::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.stat-card-tahoe:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--tahoe-shadow-xl);
+}
+
+.stat-card-tahoe:hover::before {
+    opacity: 1;
+}
+
+.stat-icon-wrapper {
+    position: relative;
+    width: 88px;
+    height: 88px;
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-blue .stat-icon-wrapper {
+    background: var(--tahoe-blue);
+    box-shadow: 0 8px 24px rgba(10, 132, 255, 0.3);
+}
+
+.stat-red .stat-icon-wrapper {
+    background: var(--tahoe-red);
+    box-shadow: 0 8px 24px rgba(255, 69, 58, 0.3);
+}
+
+.stat-green .stat-icon-wrapper {
+    background: var(--tahoe-green);
+    box-shadow: 0 8px 24px rgba(50, 215, 75, 0.3);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    line-height: 1;
+    margin-bottom: var(--space-2);
+    letter-spacing: -0.02em;
+}
+
+.stat-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #6e6e73;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-glow {
+    position: absolute;
+    inset: -2px;
+    border-radius: var(--radius-2xl);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.stat-card-tahoe:hover .stat-glow {
+    opacity: 0.6;
+}
+
+.stat-glow-blue {
+    background: linear-gradient(135deg, #0a84ff, #5e5ce6);
+    filter: blur(20px);
+}
+
+.stat-glow-red {
+    background: linear-gradient(135deg, #ff453a, #ff2d55);
+    filter: blur(20px);
+}
+
+.stat-glow-green {
+    background: linear-gradient(135deg, #32d74b, #30d158);
+    filter: blur(20px);
+}
+
+/* ============================================
+   Activity Panel - macOS List Style
+   ============================================ */
+.activity-panel,
+.actions-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-8);
+    margin-bottom: var(--space-8);
+    box-shadow: var(--tahoe-shadow-md);
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.panel-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.panel-badge {
+    background: linear-gradient(135deg, #0a84ff, #5e5ce6);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(10, 132, 255, 0.3);
+}
+
+/* Activity Grid */
+.activity-grid {
+    display: grid;
+    gap: var(--space-4);
+}
+
+.activity-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.activity-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    transition: all 0.3s ease;
+}
+
+.activity-card.blue::before {
+    background: var(--tahoe-blue);
+}
+
+.activity-card.red::before {
+    background: var(--tahoe-red);
+}
+
+.activity-card:hover {
+    transform: translateX(8px);
+    box-shadow: var(--tahoe-shadow-lg);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+.activity-card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.activity-card.blue .activity-card-icon {
+    background: linear-gradient(
+        135deg,
+        rgba(10, 132, 255, 0.1),
+        rgba(10, 132, 255, 0.2)
+    );
+    border: 2px solid rgba(10, 132, 255, 0.3);
+}
+
+.activity-card.red .activity-card-icon {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 69, 58, 0.1),
+        rgba(255, 69, 58, 0.2)
+    );
+    border: 2px solid rgba(255, 69, 58, 0.3);
+}
+
+.activity-card-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-number {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #6e6e73;
+    margin-bottom: var(--space-2);
+    font-family: "SF Mono", "Monaco", "Courier New", monospace;
+}
+
+.activity-description {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-bottom: var(--space-3);
+    line-height: 1.4;
+}
+
+.activity-footer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.status-pill {
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-new {
+    background: linear-gradient(
+        135deg,
+        rgba(10, 132, 255, 0.15),
+        rgba(10, 132, 255, 0.25)
+    );
+    color: #0969da;
+    border: 1px solid rgba(10, 132, 255, 0.3);
+}
+
+.status-in-progress {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 159, 10, 0.15),
+        rgba(255, 159, 10, 0.25)
+    );
+    color: #c66900;
+    border: 1px solid rgba(255, 159, 10, 0.3);
+}
+
+.status-resolved {
+    background: linear-gradient(
+        135deg,
+        rgba(50, 215, 75, 0.15),
+        rgba(50, 215, 75, 0.25)
+    );
+    color: #1e8e3e;
+    border: 1px solid rgba(50, 215, 75, 0.3);
+}
+
+.status-closed {
+    background: linear-gradient(
+        135deg,
+        rgba(110, 110, 115, 0.15),
+        rgba(110, 110, 115, 0.25)
+    );
+    color: #424245;
+    border: 1px solid rgba(110, 110, 115, 0.3);
+}
+
+.activity-time {
+    font-size: 0.875rem;
+    color: #86868b;
+    font-weight: 500;
+}
+
+/* ============================================
+   Quick Actions - Control Center Style
+   ============================================ */
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-4);
+}
+
+.action-tile {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-tile::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.action-tile:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--tahoe-shadow-lg);
+}
+
+.action-tile:hover::after {
+    opacity: 1;
+}
+
+.action-icon-bg {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-4);
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.action-blue .action-icon-bg {
+    background: var(--tahoe-blue);
+    box-shadow: 0 6px 20px rgba(10, 132, 255, 0.3);
+}
+
+.action-red .action-icon-bg {
+    background: var(--tahoe-red);
+    box-shadow: 0 6px 20px rgba(255, 69, 58, 0.3);
+}
+
+.action-purple .action-icon-bg {
+    background: var(--tahoe-purple);
+    box-shadow: 0 6px 20px rgba(191, 90, 242, 0.3);
+}
+
+.action-orange .action-icon-bg {
+    background: var(--tahoe-orange);
+    box-shadow: 0 6px 20px rgba(255, 159, 10, 0.3);
+}
+
+.action-tile:hover .action-icon-bg {
+    transform: scale(1.1);
+}
+
+.action-icon {
+    font-size: 2rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+.action-content {
+    position: relative;
+    z-index: 1;
+}
+
+.action-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin: 0 0 var(--space-2) 0;
+    letter-spacing: -0.01em;
+}
+
+.action-description {
+    font-size: 0.875rem;
+    color: #6e6e73;
+    margin: 0;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+/* ============================================
+   Empty State
+   ============================================ */
+.empty-state {
+    text-align: center;
+    padding: var(--space-16);
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.5),
+        rgba(245, 245, 247, 0.8)
+    );
+    border-radius: var(--radius-xl);
+    border: 2px dashed rgba(0, 0, 0, 0.1);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: var(--space-4);
+    opacity: 0.6;
+    filter: grayscale(0.3);
+}
+
+.empty-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin: 0 0 var(--space-2) 0;
+}
+
+.empty-message {
+    font-size: 1rem;
+    color: #6e6e73;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ============================================
+   Loading State - macOS Style
+   ============================================ */
+.loading-tahoe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    gap: var(--space-6);
+}
+
+.loading-spinner {
+    width: 64px;
+    height: 64px;
+    border: 4px solid rgba(0, 0, 0, 0.08);
+    border-top-color: #0a84ff;
+    border-radius: 50%;
+    animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #6e6e73;
+}
+
+.debug-info {
+    font-size: 0.875rem;
+    color: #86868b;
+    font-family: "SF Mono", "Monaco", "Courier New", monospace;
+    background: rgba(0, 0, 0, 0.03);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg);
+    max-width: 600px;
+}
+
+/* ============================================
+   Error State - macOS Style
+   ============================================ */
+.error-tahoe {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-12);
+    text-align: center;
+    max-width: 600px;
+    margin: var(--space-16) auto;
+    box-shadow: var(--tahoe-shadow-lg);
+}
+
+.error-icon {
+    font-size: 4rem;
+    margin-bottom: var(--space-4);
+}
+
+.error-message {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-bottom: var(--space-6);
+}
+
+.retry-button {
+    background: var(--tahoe-blue);
+    color: white;
+    border: none;
+    padding: var(--space-3) var(--space-8);
+    border-radius: var(--radius-full);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
+}
+
+.retry-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(10, 132, 255, 0.4);
+}
+
+.retry-button:active {
+    transform: translateY(0);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 1024px) {
+    .stats-container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .actions-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-tahoe {
+        padding: var(--space-4);
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .stats-container {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+
+    .stat-card-tahoe {
+        padding: var(--space-6);
+    }
+
+    .stat-icon-wrapper {
+        width: 72px;
+        height: 72px;
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+    }
+
+    .stat-value {
+        font-size: 2.25rem;
+    }
+
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .activity-card:hover {
+        transform: translateX(4px);
+    }
+}
+
+@media (max-width: 480px) {
+    .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-3);
+    }
+
+    .activity-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2);
+    }
+}
+
+/* ============================================
+   Accessibility & Dark Mode Support
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Optional: Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --glass-bg: rgba(28, 28, 30, 0.7);
+        --glass-border: rgba(58, 58, 60, 0.9);
+    }
+
+    .dashboard-tahoe {
+        background: linear-gradient(to bottom, #1c1c1e 0%, #000000 50%);
+    }
+
+    .panel-title,
+    .stat-value,
+    .activity-description,
+    .action-title,
+    .empty-title,
+    .hero-title {
+        color: #f5f5f7;
+    }
+
+    .stat-label,
+    .activity-number,
+    .action-description,
+    .empty-message {
+        color: #98989d;
+    }
+
+    .activity-card,
+    .action-tile {
+        background: rgba(28, 28, 30, 0.9);
+        border-color: rgba(58, 58, 60, 0.3);
+    }
+}
