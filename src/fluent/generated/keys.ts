@@ -13,6 +13,10 @@ declare global {
                         table: 'sys_module'
                         id: '2bff14acbda94d4d965871a6a4653e0b'
                     }
+                    'components/Dashboard.css': {
+                        table: 'sys_ux_theme_asset'
+                        id: 'b61814371bf94668acdda76984c9966a'
+                    }
                     facility_issue_create: {
                         table: 'sys_security_acl'
                         id: '926752470d234c6ab2cf6a81349eac0c'

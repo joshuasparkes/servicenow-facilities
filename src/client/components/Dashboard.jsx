@@ -135,7 +135,7 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h2>📊 Dashboard</h2>
+        <h2>📊 Dashboards</h2>
         <p>Quick overview of your facility requests and issues</p>
       </div>
 
