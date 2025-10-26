@@ -132,12 +132,8 @@ body {
 .welcome-text {
     font-size: 0.98em;
     color: #fff;
-    opacity: 0.92;
     margin-left: auto;
     font-weight: 500;
-    padding: 5px 12px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.1);
 }
 
 .apple-tabs {
@@ -266,15 +262,7 @@ body {
     gap: var(--space-3);
 }
 
-.welcome-text {
-    font-size: 1rem;
-    font-weight: 500;
-    opacity: 0.95;
-    background: rgba(255, 255, 255, 0.1);
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius-lg);
-    backdrop-filter: blur(10px);
-}
+
 
 /* Navigation */
 .portal-nav {

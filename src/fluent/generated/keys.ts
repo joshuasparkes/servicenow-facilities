@@ -9,6 +9,10 @@ declare global {
                         table: 'sys_scope_privilege'
                         id: '16e5af0a83343210e24857d6feaad37e'
                     }
+                    'app.css': {
+                        table: 'sys_ux_theme_asset'
+                        id: '6523205544344efcab45c8bd3ce8a0f9'
+                    }
                     bom_json: {
                         table: 'sys_module'
                         id: '2bff14acbda94d4d965871a6a4653e0b'

@@ -76,11 +76,11 @@ export default function App() {
           <h1 className="navbar-title">Facilities Services</h1>
           {user && (
             <span className="welcome-text">
-              👋 Welcome, {user.first_name} {user.last_name}
+              Welcome, {user.first_name} {user.last_name}
             </span>
           )}
           {!user && (
-            <span className="welcome-text">👋 Welcome to Facilities</span>
+            <span className="welcome-text">Welcome to Facilities</span>
           )}
         </div>
       </header>
