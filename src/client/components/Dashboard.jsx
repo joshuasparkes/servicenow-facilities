@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FacilityRequestService } from '../services/FacilityRequestService.js';
 import { FacilityIssueService } from '../services/FacilityIssueService.js';
+import { PortalUtils } from '../services/PortalUtils.js';
 import './Dashboard.css';
 
 export default function Dashboard() {
@@ -14,6 +15,7 @@ export default function Dashboard() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [debugInfo, setDebugInfo] = useState('');
 
   useEffect(() => {
     loadDashboardData();
@@ -22,10 +24,35 @@ export default function Dashboard() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
+      setDebugInfo('Starting to load dashboard data...');
+      
+      // Test basic connectivity first
+      const testResponse = await fetch('/api/now/table/sys_user?sysparm_limit=1', {
+        headers: PortalUtils.createApiHeaders()
+      });
+      
+      setDebugInfo(`Test API call status: ${testResponse.status}`);
+      
+      if (!testResponse.ok) {
+        throw new Error(`API connectivity test failed: ${testResponse.status}`);
+      }
+
+      // Try to load user-specific data
+      const userId = PortalUtils.getCurrentUserId();
+      setDebugInfo(`User ID: ${userId}, attempting to load data...`);
+
       const [myRequests, myIssues] = await Promise.all([
-        requestService.getMyRequests(),
-        issueService.getMyIssues()
+        requestService.getMyRequests().catch(err => {
+          console.warn('Failed to load requests:', err);
+          return [];
+        }),
+        issueService.getMyIssues().catch(err => {
+          console.warn('Failed to load issues:', err);
+          return [];
+        })
       ]);
+
+      setDebugInfo(`Loaded ${myRequests.length} requests and ${myIssues.length} issues`);
 
       // Combine recent activity from both requests and issues
       const recentActivity = [
@@ -50,8 +77,12 @@ export default function Dashboard() {
         myIssues: myIssues.length,
         recentActivity
       });
+      
+      setError(null);
     } catch (err) {
-      setError('Failed to load dashboard data');
+      const errorMsg = `Failed to load dashboard data: ${err.message}`;
+      setError(errorMsg);
+      setDebugInfo(`Error: ${errorMsg}`);
       console.error('Dashboard error:', err);
     } finally {
       setLoading(false);
@@ -74,8 +105,32 @@ export default function Dashboard() {
     return stateValue || 'New';
   };
 
-  if (loading) return <div className="loading">Loading dashboard...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (loading) {
+    return (
+      <div className="loading">
+        <div>Loading dashboard...</div>
+        {debugInfo && <div style={{ fontSize: '12px', marginTop: '10px' }}>{debugInfo}</div>}
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="error">
+        <div>{error}</div>
+        <div style={{ fontSize: '12px', marginTop: '10px' }}>
+          Debug Info: {debugInfo}
+        </div>
+        <div style={{ fontSize: '12px', marginTop: '10px' }}>
+          User ID: {PortalUtils.getCurrentUserId() || 'Not available'}<br/>
+          Auth Token: {PortalUtils.getAuthToken() ? 'Available' : 'Not available'}
+        </div>
+        <button onClick={loadDashboardData} style={{ marginTop: '10px' }}>
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard">

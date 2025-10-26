@@ -1,3 +1,5 @@
+import { PortalUtils } from './PortalUtils.js';
+
 // Service for managing facility issues
 export class FacilityIssueService {
   constructor() {
@@ -6,12 +8,15 @@ export class FacilityIssueService {
 
   async getMyIssues() {
     try {
-      const response = await fetch(`/api/now/table/${this.tableName}?sysparm_query=caller_id=${window.NOW.user.userID}&sysparm_display_value=all&sysparm_limit=100`, {
+      const userId = PortalUtils.getCurrentUserId();
+      if (!userId) {
+        console.warn('No user ID found, fetching all issues');
+        return this.getAllIssues();
+      }
+
+      const response = await fetch(`/api/now/table/${this.tableName}?sysparm_query=caller_id=${userId}&sysparm_display_value=all&sysparm_limit=100&sysparm_order_by=sys_created_on`, {
         method: "GET",
-        headers: {
-          "Accept": "application/json",
-          "X-UserToken": window.g_ck
-        },
+        headers: PortalUtils.createApiHeaders(),
       });
 
       if (!response.ok) {
@@ -31,13 +36,11 @@ export class FacilityIssueService {
       const searchParams = new URLSearchParams(filters);
       searchParams.set('sysparm_display_value', 'all');
       searchParams.set('sysparm_limit', '100');
+      searchParams.set('sysparm_order_by', 'sys_created_on');
       
       const response = await fetch(`/api/now/table/${this.tableName}?${searchParams.toString()}`, {
         method: "GET",
-        headers: {
-          "Accept": "application/json",
-          "X-UserToken": window.g_ck
-        },
+        headers: PortalUtils.createApiHeaders(),
       });
 
       if (!response.ok) {
@@ -54,14 +57,18 @@ export class FacilityIssueService {
 
   async createIssue(issueData) {
     try {
+      const userId = PortalUtils.getCurrentUserId();
+      
+      // Ensure caller_id is set
+      const dataToSubmit = {
+        ...issueData,
+        caller_id: userId || issueData.caller_id
+      };
+
       const response = await fetch(`/api/now/table/${this.tableName}`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          "X-UserToken": window.g_ck
-        },
-        body: JSON.stringify(issueData),
+        headers: PortalUtils.createApiHeaders(),
+        body: JSON.stringify(dataToSubmit),
       });
 
       if (!response.ok) {
@@ -80,11 +87,7 @@ export class FacilityIssueService {
     try {
       const response = await fetch(`/api/now/table/${this.tableName}/${sysId}`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          "X-UserToken": window.g_ck
-        },
+        headers: PortalUtils.createApiHeaders(),
         body: JSON.stringify(updates),
       });
 
@@ -104,10 +107,7 @@ export class FacilityIssueService {
     try {
       const response = await fetch(`/api/now/table/${this.tableName}/${sysId}?sysparm_display_value=all`, {
         method: "GET",
-        headers: {
-          "Accept": "application/json",
-          "X-UserToken": window.g_ck
-        },
+        headers: PortalUtils.createApiHeaders(),
       });
 
       if (!response.ok) {

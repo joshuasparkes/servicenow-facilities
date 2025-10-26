@@ -75,7 +75,9 @@ export default function IssueForm({ onSuccess }) {
     return (
       <div className="form-container">
         <div className="success">
-          ✅ Issue reported successfully! You will be redirected to view your issues.
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🚀</div>
+          <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.5rem', fontWeight: '600' }}>Issue Reported Successfully!</h3>
+          <p style={{ margin: 0, fontSize: '1.1rem' }}>Your issue has been logged and will be addressed promptly.</p>
         </div>
       </div>
     );
@@ -86,10 +88,14 @@ export default function IssueForm({ onSuccess }) {
   return (
     <div className="form-container">
       <h2 className="form-title">🚨 Report a Facility Issue</h2>
+      <p style={{ marginBottom: '2rem', color: 'var(--gray-600)', fontSize: '1.1rem' }}>
+        Report maintenance issues, safety hazards, or equipment problems for quick resolution.
+      </p>
       
       {error && (
         <div className="error">
-          ❌ {error}
+          <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>⚠️</div>
+          <strong>Error:</strong> {error}
         </div>
       )}
 
@@ -103,18 +109,18 @@ export default function IssueForm({ onSuccess }) {
             onChange={handleChange}
             required
           >
-            <option value="">Select issue type...</option>
-            <option value="hvac">HVAC (Heating/Cooling)</option>
-            <option value="electrical">Electrical</option>
-            <option value="plumbing">Plumbing</option>
-            <option value="lighting">Lighting</option>
-            <option value="security">Security Systems</option>
-            <option value="cleaning">Cleaning/Janitorial</option>
-            <option value="equipment">Equipment Malfunction</option>
-            <option value="structural">Structural/Building</option>
-            <option value="safety">Safety Hazard</option>
-            <option value="pest_control">Pest Control</option>
-            <option value="other">Other</option>
+            <option value="">🔧 Select issue type...</option>
+            <option value="hvac">🌡️ HVAC (Heating/Cooling)</option>
+            <option value="electrical">⚡ Electrical</option>
+            <option value="plumbing">🚰 Plumbing</option>
+            <option value="lighting">💡 Lighting</option>
+            <option value="security">🔒 Security Systems</option>
+            <option value="cleaning">🧹 Cleaning/Janitorial</option>
+            <option value="equipment">🖥️ Equipment Malfunction</option>
+            <option value="structural">🏗️ Structural/Building</option>
+            <option value="safety">⚠️ Safety Hazard</option>
+            <option value="pest_control">🐛 Pest Control</option>
+            <option value="other">❓ Other</option>
           </select>
         </div>
 
@@ -126,10 +132,13 @@ export default function IssueForm({ onSuccess }) {
             className="form-input"
             value={formData.short_description}
             onChange={handleChange}
-            placeholder="Brief description of the issue"
+            placeholder="Brief summary of the issue"
             required
             maxLength="160"
           />
+          <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginTop: '0.25rem' }}>
+            {formData.short_description.length}/160 characters
+          </div>
         </div>
 
         <div className="form-group">
@@ -139,16 +148,19 @@ export default function IssueForm({ onSuccess }) {
             className="form-textarea"
             value={formData.issue_description}
             onChange={handleChange}
-            placeholder="Provide detailed information about the issue, including what you observed, when it started, and any relevant context"
+            placeholder="Provide detailed information about the issue, including what you observed, when it started, and any relevant context..."
             required
             minLength="20"
-            style={{ minHeight: '120px' }}
+            style={{ minHeight: '140px' }}
           ></textarea>
+          <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginTop: '0.25rem' }}>
+            Minimum 20 characters ({formData.issue_description.length} entered)
+          </div>
         </div>
 
         <div className="form-row">
           <div className="form-group">
-            <label className="form-label">Urgency Level *</label>
+            <label className="form-label">🚨 Urgency Level *</label>
             <select 
               name="urgency_level" 
               className="form-select"
@@ -157,15 +169,15 @@ export default function IssueForm({ onSuccess }) {
               required
             >
               <option value="">Select urgency...</option>
-              <option value="low">Low - Can wait for scheduled maintenance</option>
-              <option value="medium">Medium - Should be addressed within a few days</option>
-              <option value="high">High - Needs attention within 24 hours</option>
-              <option value="critical">Critical - Immediate attention required</option>
+              <option value="low">🟢 Low - Can wait for scheduled maintenance</option>
+              <option value="medium">🟡 Medium - Should be addressed within a few days</option>
+              <option value="high">🟠 High - Needs attention within 24 hours</option>
+              <option value="critical">🔴 Critical - Immediate attention required</option>
             </select>
           </div>
           
           <div className="form-group">
-            <label className="form-label">Issue First Noticed</label>
+            <label className="form-label">🕒 Issue First Noticed</label>
             <input 
               type="datetime-local" 
               name="reported_date_time" 
@@ -176,131 +188,191 @@ export default function IssueForm({ onSuccess }) {
           </div>
         </div>
 
-        <div className="form-row">
-          <div className="form-group">
-            <div className="form-checkbox-group">
-              <input 
-                type="checkbox" 
-                name="safety_hazard" 
-                className="form-checkbox"
-                checked={formData.safety_hazard}
-                onChange={handleChange}
-              />
-              <label className="form-label">This is a safety hazard</label>
-            </div>
-          </div>
+        <div style={{ marginBottom: '2rem' }}>
+          <h3 style={{ 
+            fontSize: '1.25rem', 
+            fontWeight: '600', 
+            marginBottom: '1rem', 
+            color: 'var(--gray-700)',
+            borderBottom: '2px solid var(--gray-200)',
+            paddingBottom: '0.5rem'
+          }}>
+            ⚠️ Impact Assessment
+          </h3>
           
-          <div className="form-group">
-            <div className="form-checkbox-group">
-              <input 
-                type="checkbox" 
-                name="affects_operations" 
-                className="form-checkbox"
-                checked={formData.affects_operations}
-                onChange={handleChange}
-              />
-              <label className="form-label">This affects business operations</label>
-            </div>
-          </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-group">
-            <label className="form-label">Building *</label>
-            <input 
-              type="text" 
-              name="building" 
-              className="form-input"
-              value={formData.building}
-              onChange={handleChange}
-              placeholder="Building name or number"
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label className="form-label">Floor</label>
-            <input 
-              type="text" 
-              name="floor" 
-              className="form-input"
-              value={formData.floor}
-              onChange={handleChange}
-              placeholder="Floor number or name"
-            />
-          </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-group">
-            <label className="form-label">Room Number</label>
-            <input 
-              type="text" 
-              name="room_number" 
-              className="form-input"
-              value={formData.room_number}
-              onChange={handleChange}
-              placeholder="Room number or area"
-            />
-          </div>
-          
-          <div className="form-group">
-            <label className="form-label">Number of People Affected</label>
-            <input 
-              type="number" 
-              name="number_of_people_affected" 
-              className="form-input"
-              value={formData.number_of_people_affected}
-              onChange={handleChange}
-              placeholder="0"
-              min="0"
-            />
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">Specific Location Details</label>
-          <input 
-            type="text" 
-            name="specific_location_details" 
-            className="form-input"
-            value={formData.specific_location_details}
-            onChange={handleChange}
-            placeholder="More precise location information (e.g., 'Near the coffee machine', 'By the east window')"
-          />
-        </div>
-
-        {showTemperatureFields && (
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Current Temperature (°F)</label>
+              <div className={`form-checkbox-group ${formData.safety_hazard ? 'checked' : ''}`}>
+                <input 
+                  type="checkbox" 
+                  name="safety_hazard" 
+                  className="form-checkbox"
+                  checked={formData.safety_hazard}
+                  onChange={handleChange}
+                />
+                <label className="form-label" style={{ margin: 0, textTransform: 'none' }}>
+                  ⚠️ This is a safety hazard
+                </label>
+              </div>
+            </div>
+            
+            <div className="form-group">
+              <div className={`form-checkbox-group ${formData.affects_operations ? 'checked' : ''}`}>
+                <input 
+                  type="checkbox" 
+                  name="affects_operations" 
+                  className="form-checkbox"
+                  checked={formData.affects_operations}
+                  onChange={handleChange}
+                />
+                <label className="form-label" style={{ margin: 0, textTransform: 'none' }}>
+                  🏢 This affects business operations
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ marginBottom: '2rem' }}>
+          <h3 style={{ 
+            fontSize: '1.25rem', 
+            fontWeight: '600', 
+            marginBottom: '1rem', 
+            color: 'var(--gray-700)',
+            borderBottom: '2px solid var(--gray-200)',
+            paddingBottom: '0.5rem'
+          }}>
+            📍 Location Details
+          </h3>
+          
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">🏢 Building *</label>
               <input 
-                type="number" 
-                name="current_temperature" 
+                type="text" 
+                name="building" 
                 className="form-input"
-                value={formData.current_temperature}
+                value={formData.building}
                 onChange={handleChange}
-                placeholder="Temperature"
+                placeholder="Building name or number"
+                required
               />
             </div>
             
             <div className="form-group">
-              <label className="form-label">Desired Temperature (°F)</label>
+              <label className="form-label">🏗️ Floor</label>
+              <input 
+                type="text" 
+                name="floor" 
+                className="form-input"
+                value={formData.floor}
+                onChange={handleChange}
+                placeholder="Floor number or name"
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">🚪 Room Number</label>
+              <input 
+                type="text" 
+                name="room_number" 
+                className="form-input"
+                value={formData.room_number}
+                onChange={handleChange}
+                placeholder="Room number or area"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">👥 People Affected</label>
               <input 
                 type="number" 
-                name="desired_temperature" 
+                name="number_of_people_affected" 
                 className="form-input"
-                value={formData.desired_temperature}
+                value={formData.number_of_people_affected}
                 onChange={handleChange}
-                placeholder="Desired temperature"
+                placeholder="0"
+                min="0"
               />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">📌 Specific Location Details</label>
+            <input 
+              type="text" 
+              name="specific_location_details" 
+              className="form-input"
+              value={formData.specific_location_details}
+              onChange={handleChange}
+              placeholder="More precise location (e.g., 'Near the coffee machine', 'By the east window')"
+            />
+          </div>
+        </div>
+
+        {showTemperatureFields && (
+          <div style={{ 
+            marginBottom: '2rem',
+            padding: '1.5rem',
+            background: 'linear-gradient(135deg, var(--primary-50), var(--primary-100))',
+            borderRadius: 'var(--radius-lg)',
+            border: '2px solid var(--primary-200)'
+          }}>
+            <h4 style={{ 
+              fontSize: '1.125rem', 
+              fontWeight: '600', 
+              marginBottom: '1rem', 
+              color: 'var(--primary-700)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}>
+              🌡️ Temperature Information
+            </h4>
+            
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Current Temperature (°F)</label>
+                <input 
+                  type="number" 
+                  name="current_temperature" 
+                  className="form-input"
+                  value={formData.current_temperature}
+                  onChange={handleChange}
+                  placeholder="Current temp"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Desired Temperature (°F)</label>
+                <input 
+                  type="number" 
+                  name="desired_temperature" 
+                  className="form-input"
+                  value={formData.desired_temperature}
+                  onChange={handleChange}
+                  placeholder="Desired temp"
+                />
+              </div>
             </div>
           </div>
         )}
 
         <div className="form-buttons">
           <button type="submit" className="btn btn-primary" disabled={submitting}>
-            {submitting ? 'Submitting...' : 'Report Issue'}
+            {submitting ? (
+              <>
+                <span style={{ marginRight: '0.5rem' }}>⏳</span>
+                Reporting Issue...
+              </>
+            ) : (
+              <>
+                <span style={{ marginRight: '0.5rem' }}>📢</span>
+                Report Issue
+              </>
+            )}
           </button>
         </div>
       </form>

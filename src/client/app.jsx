@@ -4,28 +4,40 @@ import IssueForm from './components/IssueForm.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import MyRequests from './components/MyRequests.jsx';
 import MyIssues from './components/MyIssues.jsx';
+import { PortalUtils } from './services/PortalUtils.js';
 import './app.css';
 
 export default function App() {
   const [currentView, setCurrentView] = useState('dashboard');
   const [user, setUser] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
 
   useEffect(() => {
-    // Get current user information
-    fetch('/api/now/table/sys_user?sysparm_query=user_name=' + window.NOW.user.userID + '&sysparm_limit=1', {
-      headers: {
-        'Accept': 'application/json',
-        'X-UserToken': window.g_ck
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.result && data.result.length > 0) {
-        setUser(data.result[0]);
-      }
-    })
-    .catch(error => console.error('Error fetching user:', error));
+    initializeApp();
   }, []);
+
+  const initializeApp = async () => {
+    try {
+      // Wait a bit for ServiceNow globals to be available
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Try to get current user info
+      const userInfo = await PortalUtils.getCurrentUserInfo();
+      setUser(userInfo);
+      
+      console.log('Portal initialized with user:', userInfo);
+      console.log('Available globals:', { 
+        g_user: window.g_user, 
+        NOW: window.NOW, 
+        g_ck: window.g_ck 
+      });
+      
+    } catch (error) {
+      console.error('Error initializing app:', error);
+    } finally {
+      setAuthReady(true);
+    }
+  };
 
   const handleViewChange = (view) => {
     setCurrentView(view);
@@ -47,12 +59,33 @@ export default function App() {
     }
   };
 
+  if (!authReady) {
+    return (
+      <div className="facility-portal">
+        <div className="loading">
+          <div>🏢 Initializing Facilities Portal...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="facility-portal">
       <header className="portal-header">
         <div className="header-content">
-          <h1>🏢 Facilities Management Portal</h1>
-          {user && <span className="welcome-text">Welcome, {user.first_name} {user.last_name}</span>}
+          <h1>
+            🏢 Facilities Management
+          </h1>
+          {user && (
+            <span className="welcome-text">
+              👋 Welcome, {user.first_name} {user.last_name}
+            </span>
+          )}
+          {!user && (
+            <span className="welcome-text">
+              👋 Welcome to Facilities
+            </span>
+          )}
         </div>
       </header>
 
