@@ -141,6 +141,7 @@ body {
     align-items: stretch;
     justify-content: stretch;
     width: 100vw;
+    height: 20px;
     min-width: 0;
     background: transparent;
     user-select: none;
